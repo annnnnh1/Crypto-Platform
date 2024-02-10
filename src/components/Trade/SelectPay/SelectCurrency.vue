@@ -1,0 +1,51 @@
+<template>
+    <div class="container-trade_main--form-value" @click="dropdownCur()">
+        <div class="value">
+            <i class="fa-solid fa-dollar-sign"></i> 
+            {{ BALANCE.mainCurrency }}
+        </div>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+            <path fill-rule="evenodd" clip-rule="evenodd"
+                d="M12.11 12.178L16 8.287l1.768 1.768-5.657 5.657-1.768-1.768-3.889-3.889 1.768-1.768 3.889 3.89z"
+                fill="currentColor"></path>
+        </svg>
+        <div class="container-trade_main--form-drop">
+            <ul v-if="dropdownCurrency">
+                <li v-for="(item, key) in BALANCE.listCurrency" 
+                    @click="changeCurrency(item)" :key="key">
+                    {{ item }}
+                    <!-- <router-link :to="'/crypto/' + $route.params.type + '/' + item"> {{ item }}</router-link> -->
+                </li>
+            </ul>
+        </div>
+    </div>
+</template>
+
+<script>
+import { mapGetters } from 'vuex';
+
+export default {
+
+    computed: {
+            ...mapGetters(['BALANCE'])
+        },
+        mounted() {
+            this.$store.dispatch('GET_BALANCE');
+        },
+
+    data: () => {
+        return {
+            dropdownCurrency: false,
+        };
+    },
+    methods: {
+        changeCurrency(elem) {
+            this.BALANCE.mainCurrency = elem;
+        },
+        dropdownCur() {
+            this.dropdownCurrency = !this.dropdownCurrency
+        },
+    }
+
+}
+</script>
